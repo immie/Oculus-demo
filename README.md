@@ -13,6 +13,11 @@ Restrictions:
 * Videos should load dynamically without any change to the page's URL
 * Cache video data already retrieved from Youtube.
 
+Sugar n' Spice
+--------------
+* Http Interceptor handling server messages of the 400 & 500s varities.
+* Caching of videos on localstorage to avoid unnecessary bandwidth. 
+
 Other Thoughts:
 ---------------
 
