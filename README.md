@@ -6,6 +6,7 @@ Demo project using AngularJS to interface with the Youtube API
 Restrictions:
 -------------
 
+* Youtube feed API and renders videos about Oculus using only JS, HTML & CSS
 * Only a body tag on initial render.
 * All markup should be rendered using a templating engine like Dust, Twig, Mustache, etc.
 * Should show one video at a time.
