@@ -30,3 +30,9 @@ Ethos Of the Build:
 
 The goal of this test is not to produce code that simply meets the requirements stated above.
 The goal is to provide us with an example of the best client-side application you can create using the given constraints.  
+
+Testing:
+--------
+
+### Dependencies
+`sudo npm install -g karma`
