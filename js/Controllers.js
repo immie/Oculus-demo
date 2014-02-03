@@ -49,6 +49,12 @@
 
 			};
 
+			$scope.$watch( 'data.keyword', function(){
+				if( !!$scope.data.keyword ){
+					initialize();
+				}
+			})
+
 			return initialize();
 
 		}]);

@@ -1,4 +1,11 @@
 <div class="grid">
+	<header class="clearfix">
+		<div class="keyword-search">
+			<input ng-model="view.keyword" placeholder="Search by keyword" />
+			<button ng-click="data.keyword = view.keyword">search</button>
+		</div>
+		<h1>Oculus youtube API demo</h1>
+	</header>
 	<section class="col-2-3">
 		<youtube-player id="player" defaultvideoid="{{data.videoId}}" video="data.video"></youtube-player>
 	</section>

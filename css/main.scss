@@ -45,6 +45,14 @@ $pad: 20px;
     display: table;
     clear: both;
   }
+  & .keyword-search{
+    float: right;
+    position: relative;
+    top: 30px;
+  }
+  & h1{
+    float: left;
+  }
 }
 
 [class*='col-'] {
