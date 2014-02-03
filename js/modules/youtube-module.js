@@ -75,6 +75,14 @@
 				},
 
 				/**
+				 * Get a copy of the default object to make changes to
+				 * @return {Object} searchParamDefaults
+				 */
+				getSearchParams: function(){
+					return searchParamDefaults;
+				},
+
+				/**
 				 * Search request will be made via youtube API
 				 * @param  {Array|String} keywords on which to search on
 				 * @return {Object Promise}  $http promise.
@@ -142,8 +150,9 @@
 				templateUrl: 'youtube/player.html',
 				link: function( scope, element, attrs ){
 					scope.$watch('video', function(){
-						if( !angular.equals(scope.video, {}) && !!scope.video.id.videoId ){
+						if( scope.video !== undefined && !angular.equals(scope.video, {}) && !!scope.video.id.videoId ){
 							scope.updateVideo();
+							console.log(scope.video);
 						}
 					});
 

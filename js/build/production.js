@@ -128,6 +128,14 @@
 				},
 
 				/**
+				 * Get a copy of the default object to make changes to
+				 * @return {Object} searchParamDefaults
+				 */
+				getSearchParams: function(){
+					return searchParamDefaults;
+				},
+
+				/**
 				 * Search request will be made via youtube API
 				 * @param  {Array|String} keywords on which to search on
 				 * @return {Object Promise}  $http promise.
@@ -195,8 +203,9 @@
 				templateUrl: 'youtube/player.html',
 				link: function( scope, element, attrs ){
 					scope.$watch('video', function(){
-						if( !angular.equals(scope.video, {}) && !!scope.video.id.videoId ){
+						if( scope.video !== undefined && !angular.equals(scope.video, {}) && !!scope.video.id.videoId ){
 							scope.updateVideo();
+							console.log(scope.video);
 						}
 					});
 
@@ -246,21 +255,48 @@
 	.controller( 'homeController', [ '$scope', 'youtubeAPIService',
 		function( $scope, youtubeAPIService ){
 
+			var currentResults = {
+				metaData: {}
+			};
+
 			$scope.data = {
 				videoId: 'M7lc1UVf-VE',
-				video:{},
-				results:null
+				items:{},
+				results:null,
+				keyword: 'oculus'
 			};
 
 			var initialize = function(){
-				var call = youtubeAPIService.searchKeyword('oculus');
+				var call = youtubeAPIService.searchKeyword( $scope.data.keyword );
 				call.then(function(data){
-					$scope.data.results = data;
+					$scope.data.items = data.items;
+					currentResults.metaData.nextPageToken = data.nextPageToken;
 				});
 			}
 
 			$scope.updateVideo = function( video ){
 				$scope.$apply($scope.data.video = video);
+			};
+
+			/**
+			 * Called by the scrollLoadResults directive when the user scrolls to the bottom of the list.
+			 */
+			$scope.fetchMoreVideos = function(){
+				var params = youtubeAPIService.getSearchParams(),
+					pNetworkCall;
+
+				params.pageToken = currentResults.metaData.nextPageToken;
+				youtubeAPIService.setSearchParam( params );
+
+				pNetworkCall = youtubeAPIService.searchKeyword( $scope.data.keyword );
+				pNetworkCall.then( function( data ){
+					angular.forEach( data.items, function(value, key){
+						$scope.data.items.push( value );
+					});
+					
+					currentResults.metaData.nextPageToken = data.nextPageToken;
+				})
+
 			};
 
 			return initialize();
@@ -284,14 +320,39 @@
 				link: function(scope,element,attrs){
 					element.on( 'click', function(){
 						scope.userSelectedVideo({video: scope.videoData});
-					})
+						angular.element( element.parent()[0].querySelectorAll('.active') ).removeClass('active');
+						element.addClass('active');
+					});
+					// scope.prettyFormat = angular.toJson(scope.videoData.snippet, true);
 				}
 			}
 		}])
+	.directive( 'scrollLoadResults' , [function(){
+		return{
+			restrict: 'A',
+			scope:{
+				pingCallback: '&'
+			},
+			link: function(scope,element,attrs){
+				var raw = element[0];
+        
+        		/**
+        		 * TODO: Need a solution to put a governor on this event
+        		 */
+		        element.bind('scroll', function() {
+		            if (raw.scrollTop + raw.offsetHeight >= ( raw.scrollHeight - 100 ) ) {
+		                scope.pingCallback();
+		            }
+		        });
+			}
+		}
+	}])
 	.run( [ '$templateCache', function( $templateCache ) {
 		$templateCache.put('youtube/thumbnail.html', 
 			'<div class="mod-thumbnail">'+
 			'	<img ng-src="{{videoData.snippet.thumbnails.default.url}}"/>'+
+			'	<div class="thumbnail-title">{{videoData.snippet.title}}</div>'+
+			'	<div class="thumbnail-description">{{videoData.snippet.description}}</div>'+
 			'</div>'
 		);
 	}]);

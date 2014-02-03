@@ -1,5 +1,25 @@
-$font-stack:    Helvetica, sans-serif;
-$primary-color: #000;
+
+/*
+ * Clearfix: contain floats
+ *
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    `contenteditable` attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that receive the `clearfix` class.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
 
 /**
  * css tricks simple grid
@@ -14,8 +34,10 @@ $primary-color: #000;
 $pad: 20px;
 
 .grid {
-  background: white;
+  background: #fff;
+  height: 800px;
   margin: 0 0 $pad 0;
+  padding: 0 $pad;
   
   &:after {
     /* Or @extend clearfix */
@@ -29,7 +51,7 @@ $pad: 20px;
   float: left;
   padding-right: $pad;
   .grid &:last-of-type {
-    padding-right: 0;
+    // padding-right: 0;
   }
 }
 .col-2-3 {
@@ -48,6 +70,11 @@ $pad: 20px;
   width: 12.5%;
 }
 
+iframe{
+  height: 400px;
+  width: 100%;
+}
+
 /* Opt-in outside padding */
 .grid-pad {
   padding: $pad 0 $pad $pad;
@@ -56,7 +83,25 @@ $pad: 20px;
   }
 }
 
-body {
-  font: 100% $font-stack;
-  color: $primary-color;
+aside.col-1-3{
+  height: 100%;
+  overflow: auto;
+  padding: 5px;
+}
+
+aside.col-1-3::-webkit-scrollbar{
+  display: none;
+}
+
+@media screen and (max-width: 1200px){
+  aside.col-1-3{
+    float: none;
+    width: 100%
+  }
+
+  .col-2-3{
+    width: 100%;
+
+
+  }
 }
