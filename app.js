@@ -6,11 +6,24 @@
 	 * Depedencies:
 	 * ngRoute : $routeProvider
 	 * http-interceptor : $httpProvider
+	 * youtubeModule : the blackbox interaction with youtube
 	 */
-	angular.module( 'oculus-demo', [ 'ngRoute', 'http-interceptor' ] )
-	.config(['$routeProvider', function($routeProvider) {
+	angular.module( 'oculusDemo', [ 'ngRoute', 'http-interceptor', 'youtubeModule' ] )
+	.config(['$routeProvider', function( $routeProvider ) {
 		$routeProvider
 		.when('/', { templateUrl: 'partials/home.html', controller: 'homeController' })
 		.otherwise( {redirectTo:'/'} );
 	}]);
 })();
+
+/**
+ * Bootstrapping, will be used with a script loader
+ */
+
+;(function( element ){
+	'use strict';
+	setTimeout(function(){
+		angular.bootstrap( element, ['oculusDemo'] );
+	}, 200);
+	
+})(document.querySelector('body'));

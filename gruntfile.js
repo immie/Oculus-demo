@@ -5,13 +5,19 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         concat: {   
-            dist: {
+            js: {
                 src: [
+                    'js/modules/*.js', // non-main app modules
                     'app.js',
-                    'js/*.js', // All JS in the libs folder
-                    'js/modules/*.js'
+                    'js/*.js' // All JS in the libs folder
                 ],
                 dest: 'js/build/production.js',
+            },
+            css: {
+                src: [
+                    'css/compiled/*.css'
+                ],
+                dest: 'css/build/main.css',
             }
         },
 
@@ -46,7 +52,7 @@ module.exports = function(grunt) {
                 livereload: true,
             },
             scripts: {
-                files: ['js/modules/*.js', 'js/*.js'],
+                files: ['js/modules/*.js', 'js/*.js', 'app.js'],
                 tasks: ['concat', 'uglify'],
                 options: {
                     spawn: false,
@@ -54,7 +60,7 @@ module.exports = function(grunt) {
             },
             css: {
                 files: ['css/*.scss'],
-                tasks: ['sass'],
+                tasks: ['sass', 'concat'],
                 options: {
                     spawn: false,
                 }
@@ -72,7 +78,8 @@ module.exports = function(grunt) {
                     style: 'compressed'
                 },
                 files: {
-                    'css/build/main.css': 'css/main.scss'
+                    'css/compiled/main.css': 'css/main.scss',
+                    'css/compiled/mod-thumbnail.css': 'css/mod-thumbnail.scss'
                 }
             } 
         }
