@@ -7,6 +7,8 @@ module.exports = function(grunt) {
         concat: {   
             js: {
                 src: [
+                    'tests/lib/angular.js',
+                    'tests/lib/angular-route.js',
                     'js/modules/*.js', // non-main app modules
                     'app.js',
                     'js/*.js' // All JS in the libs folder
