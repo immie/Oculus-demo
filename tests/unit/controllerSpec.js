@@ -1,8 +1,8 @@
 'use strict';
 
 describe('controllers', function(){
-  beforeEach(module('oculus-demo'));
-
+  beforeEach(module('oculusDemo'));
+  
 
   it('should ....', inject(function() {
     expect(true).toBe(true);

@@ -72,6 +72,7 @@ module.exports = function(grunt) {
             }
         },
 
+        // css preprocessor management
         sass: {
             dist: {
                 options: {
@@ -82,6 +83,14 @@ module.exports = function(grunt) {
                     'css/compiled/mod-thumbnail.css': 'css/mod-thumbnail.scss'
                 }
             } 
+        },
+
+        protractor: {
+            options:{
+                configFile:'tests/protractor.conf.js',
+                keepAlive: true, // if false, grunt process stops at the first error found
+                
+            }
         }
     });
 
@@ -97,6 +106,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
     // unit test management
     grunt.loadNpmTasks('grunt-karma');
+    // e2e test management
+    grunt.loadNpmTasks('grunt-protractor-runner');
 
     // 4. Where we tell Grunt what to do when we type "grunt" into the terminal.
     grunt.registerTask('default', ['concat', 'uglify', 'imagemin', 'watch', 'sass', 'karma']);

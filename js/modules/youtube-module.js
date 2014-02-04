@@ -10,7 +10,7 @@
 		function( $http, $log, $q, $window ){
 
 			var searchParamDefaults = {
-					key:'AIzaSyAD0zYSogTVsvGNGnnWJKghb7jms3dua4M',					
+					key:'AIzaSyAD0zYSogTVsvGNGnnWJKghb7jms3dua4M',
 					part: 'snippet',
 					type: 'video',
 					q: 'Oculus',
