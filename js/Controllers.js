@@ -20,6 +20,7 @@
 				var call = youtubeAPIService.searchKeyword( $scope.data.keyword );
 				call.then(function(data){
 					$scope.data.items = data.items;
+					// $scope.data.video = data.items[0];
 					currentResults.metaData.nextPageToken = data.nextPageToken;
 				});
 			}

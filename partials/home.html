@@ -10,7 +10,7 @@
 		<youtube-player id="player" defaultvideoid="{{data.videoId}}" video="data.video"></youtube-player>
 	</section>
 	<aside class="col-1-3" data-scroll-load-results  ping-callback="fetchMoreVideos()">
-		<div >
+		<div>
 			<thumb-nail ng-repeat="video in data.items" video-data="video" user-selected-video="updateVideo(video)"></thumb-nail>
 		</div>
 	</aside>

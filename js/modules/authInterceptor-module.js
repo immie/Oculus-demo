@@ -4,13 +4,13 @@
     angular.module('http-interceptor', [])
     .config(['$httpProvider', function($httpProvider) {
 
-        var interceptor = ['$rootScope', '$q', function($rootScope, $q) {
+        var interceptor = ['$q', '$log', function( $q, $log ) {
 
             /**
             * [Looking for server codes starting with "4" or "5"]
             * @type {RegExp}
             */
-            var errorMsgReg = new RegExp(/^(5|4)/);
+            var errorMsgReg = new RegExp(/^(5|4|0)/);
 
             /**
              * success callback for the promise.  Information is just passed through.
@@ -27,10 +27,9 @@
              * @return {[type]}          [description]
              */
             function error( response ) {
-                var message;
                 if ( errorMsgReg.test(response.status) ) {
                     // broadcasting to userMessage-directive
-                    $rootScope.$broadcast('event:userMessage', message);
+                    $log.error( 'network error: ', response );
                 }
                 // otherwise, default behavior
                 return $q.reject(response);

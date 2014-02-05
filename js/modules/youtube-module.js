@@ -149,6 +149,8 @@
 				}],
 				templateUrl: 'youtube/player.html',
 				link: function( scope, element, attrs ){
+
+					/** watch for a video change */
 					scope.$watch('video', function(){
 						if( scope.video !== undefined && !angular.equals(scope.video, {}) && !!scope.video.id.videoId ){
 							scope.updateVideo();

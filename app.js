@@ -16,14 +16,3 @@
 	}]);
 })();
 
-/**
- * Bootstrapping, will be used with a script loader
- */
-
-;(function( element ){
-	'use strict';
-	setTimeout(function(){
-		angular.bootstrap( element, ['oculusDemo'] );
-	}, 200);
-	
-})(document.querySelector('body'));

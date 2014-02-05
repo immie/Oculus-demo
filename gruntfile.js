@@ -9,9 +9,11 @@ module.exports = function(grunt) {
                 src: [
                     'tests/lib/angular.js',
                     'tests/lib/angular-route.js',
-                    'js/modules/*.js', // non-main app modules
                     'app.js',
-                    'js/*.js' // All JS in the libs folder
+                    'js/modules/*.js', // non-main app modules
+                    'js/*.js', // All JS in the libs folder
+                    'bootstrap.js'
+                    
                 ],
                 dest: 'js/build/production.js',
             },

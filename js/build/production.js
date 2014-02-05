@@ -21479,19 +21479,38 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
+;(function(){
+	'use strict';
+
+	/**
+	 * Oculus Demo Module.  Main driver
+	 * Depedencies:
+	 * ngRoute : $routeProvider
+	 * http-interceptor : $httpProvider
+	 * youtubeModule : the blackbox interaction with youtube
+	 */
+	angular.module( 'oculusDemo', [ 'ngRoute', 'http-interceptor', 'youtubeModule' ] )
+	.config(['$routeProvider', function( $routeProvider ) {
+		$routeProvider
+		.when('/', { templateUrl: 'partials/home.html', controller: 'homeController' })
+		.otherwise( {redirectTo:'/'} );
+	}]);
+})();
+
+
 ;(function () {
     'use strict';
 
     angular.module('http-interceptor', [])
     .config(['$httpProvider', function($httpProvider) {
 
-        var interceptor = ['$rootScope', '$q', function($rootScope, $q) {
+        var interceptor = ['$q', '$log', function( $q, $log ) {
 
             /**
             * [Looking for server codes starting with "4" or "5"]
             * @type {RegExp}
             */
-            var errorMsgReg = new RegExp(/^(5|4)/);
+            var errorMsgReg = new RegExp(/^(5|4|0)/);
 
             /**
              * success callback for the promise.  Information is just passed through.
@@ -21508,10 +21527,9 @@ function ngViewFillContentFactory($compile, $controller, $route) {
              * @return {[type]}          [description]
              */
             function error( response ) {
-                var message;
                 if ( errorMsgReg.test(response.status) ) {
                     // broadcasting to userMessage-directive
-                    $rootScope.$broadcast('event:userMessage', message);
+                    $log.error( 'network error: ', response );
                 }
                 // otherwise, default behavior
                 return $q.reject(response);
@@ -21683,6 +21701,8 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 				}],
 				templateUrl: 'youtube/player.html',
 				link: function( scope, element, attrs ){
+
+					/** watch for a video change */
 					scope.$watch('video', function(){
 						if( scope.video !== undefined && !angular.equals(scope.video, {}) && !!scope.video.id.videoId ){
 							scope.updateVideo();
@@ -21700,35 +21720,6 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 		);
 	}]);;
 })()
-;(function(){
-	'use strict';
-
-	/**
-	 * Oculus Demo Module.  Main driver
-	 * Depedencies:
-	 * ngRoute : $routeProvider
-	 * http-interceptor : $httpProvider
-	 * youtubeModule : the blackbox interaction with youtube
-	 */
-	angular.module( 'oculusDemo', [ 'ngRoute', 'http-interceptor', 'youtubeModule' ] )
-	.config(['$routeProvider', function( $routeProvider ) {
-		$routeProvider
-		.when('/', { templateUrl: 'partials/home.html', controller: 'homeController' })
-		.otherwise( {redirectTo:'/'} );
-	}]);
-})();
-
-/**
- * Bootstrapping, will be used with a script loader
- */
-
-;(function( element ){
-	'use strict';
-	setTimeout(function(){
-		angular.bootstrap( element, ['oculusDemo'] );
-	}, 200);
-	
-})(document.querySelector('body'));
 ;(function(){
 	'use strict';
 
@@ -21751,6 +21742,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 				var call = youtubeAPIService.searchKeyword( $scope.data.keyword );
 				call.then(function(data){
 					$scope.data.items = data.items;
+					// $scope.data.video = data.items[0];
 					currentResults.metaData.nextPageToken = data.nextPageToken;
 				});
 			}
@@ -21844,3 +21836,13 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 		);
 	}]);
 })();
+
+/**
+ * Bootstrapping, will be used with a script loader
+ */
+
+;(function( element ){
+	'use strict';
+	angular.bootstrap( element, ['oculusDemo'] );
+	
+})(document.querySelector('body'));
